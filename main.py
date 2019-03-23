@@ -109,14 +109,12 @@ def parseInputFile(path):
 
 
     if version == 'v0':
-        content = map(str.strip, lines[1:])
+        content = [(NOTES_NAME," ".join(map(str.strip, lines[1:])).strip().split())]
 
     if version == 'v1':
         content = parseV1(lines[1:])
 
-    maxLinelen = 60 # todo make this notes or bars, instead of chars, also makes parsing harder, add in new parse file versio
-
-    return content, maxLinelen
+    return content
 
 def parseV1(lines):
     # allow insert of label [verse] with value in between to mark in output
@@ -142,9 +140,9 @@ def parseV1(lines):
 if len(sys.argv) == 2:
 
     baseDict = {'E':"", 'A':"", 'D' :"",'G':"",'B':"",'e':""}
-    text, maxLinelen =  parseInputFile(sys.argv)
-
-    resList = parse(text, baseDict)
+    parsed =  parseInputFile(sys.argv)
+    print parsed
+    resList = parse(parsed, baseDict)
     print listResDictToString(resList)
 else:
     print " old test "
