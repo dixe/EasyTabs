@@ -1,31 +1,46 @@
 import sys
+from copy import deepcopy
 
 
-def parse(tokens, resDict):
+NOTES_NAME = "NOTES"
 
-    print tokens
+LABEL_NAME = "LABEL"
+
+
+
+def parse(tokenTuples, resDict):
 
 
     state = []
 
-    while tokens != []:
+    outputRes = []
+    while tokenTuples != []:
         reqTokens = []
-        token, tokens = next_token(tokens)
-        if token[0].isalpha():
-            state = []
-            print token
-            exit()
-            for char in token:
-                if char.isalpha():
-                    state.append(char)
-        else:
-            reqTokens = [token]
+
+        tokenTup, tokenTuples = next_token(tokenTuples)
+
+        if tokenTup[0] == NOTES_NAME:
+            stateDict = deepcopy(resDict)
+            tokens = tokenTup[1]
+
+            while tokens != []:
+                token, tokens = next_token(tokens)
+                if token[0].isalpha():
+                    state = []
+                    for char in token:
+                        if char.isalpha():
+                            state.append(char)
+                else:
+                    reqTokens = [token]
 
 
-        tokens, resDict = parse_state(state, tokens, reqTokens, resDict)
+                tokens, stateDict = parse_state(state, tokens, reqTokens, stateDict)
 
+            outputRes.append((tokenTup[0], stateDict))
+        elif tokenTup[0] == LABEL_NAME:
+            outputRes.append(tokenTup)
 
-    return resDict
+    return outputRes
 
 def parse_state(state, tokens, reqTokens, resDict):
 
@@ -52,14 +67,28 @@ def next_token(tokens):
     return tokens[0], tokens[1:]
 
 
-def resDictToString(resDict, maxLineLen):
+
+def listResDictToString(resList):
     notes = "e B G D A E".split()
     res = ""
 
-    for i in range(0, max(len(resDict[resDict.keys()[0]]),1), maxLinelen):
-        for n in notes:
-            res += "{0}|{1}\n".format(n, resDict[n][i:i+maxLinelen])
-        res += "\n\n"
+    for tokenTup in resList:
+        if tokenTup[0] == NOTES_NAME:
+
+            res += resDictToString(tokenTup[1])
+            res += '\n\n'
+        elif tokenTup[0] == LABEL_NAME:
+            res += tokenTup[1] + '\n'
+
+
+    return res
+
+def resDictToString(resDict):
+    notes = "e B G D A E".split()
+    res = ""
+
+    for n in notes:
+        res += "{0}|{1}\n".format(n, resDict[n])
     return res.strip()
 
 
@@ -94,11 +123,13 @@ def parseV1(lines):
 
     tokens = []
     for l in lines:
+        if len(l.strip()) == 0:
+            continue
         if l.startswith('['):
             label = l[1:-2]
-            tokens.append(("label", label))
+            tokens.append((LABEL_NAME, label))
         else:
-            tokens.append(("note", l.split()))
+            tokens.append((NOTES_NAME, l.split()))
 
     return tokens
 
@@ -113,8 +144,8 @@ if len(sys.argv) == 2:
     baseDict = {'E':"", 'A':"", 'D' :"",'G':"",'B':"",'e':""}
     text, maxLinelen =  parseInputFile(sys.argv)
 
-    resDict = parse(text, baseDict)
-    print resDictToString(resDict, maxLinelen)
+    resList = parse(text, baseDict)
+    print listResDictToString(resList)
 else:
     print " old test "
     baseDict = {'E':"", 'A':"", 'D' :"",'G':"",'B':"",'e':""}
