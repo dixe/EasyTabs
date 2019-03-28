@@ -7,10 +7,7 @@ NOTES_NAME = "NOTES"
 LABEL_NAME = "LABEL"
 
 
-
 def parse(tokenTuples, resDict):
-
-
     state = []
 
     outputRes = []
@@ -18,6 +15,7 @@ def parse(tokenTuples, resDict):
         reqTokens = []
 
         tokenTup, tokenTuples = next_token(tokenTuples)
+
 
         if tokenTup[0] == NOTES_NAME:
             stateDict = deepcopy(resDict)
@@ -34,19 +32,18 @@ def parse(tokenTuples, resDict):
                     reqTokens = [token]
 
 
-                tokens, stateDict = parse_state(state, tokens, reqTokens, stateDict)
+                tokens, stateDict = parse_notes_state(state, tokens, reqTokens, stateDict)
 
             outputRes.append((tokenTup[0], stateDict))
+
         elif tokenTup[0] == LABEL_NAME:
             outputRes.append(tokenTup)
 
     return outputRes
 
-def parse_state(state, tokens, reqTokens, resDict):
-
+def parse_notes_state(state, tokens, reqTokens, resDict):
 
     while len(reqTokens)< len(state):
-
         token, tokens = next_token(tokens)
         reqTokens.append(token)
 
@@ -59,6 +56,9 @@ def parse_state(state, tokens, reqTokens, resDict):
         else:
             resDict[k] += "---"
     return tokens, resDict
+
+
+
 
 
 def next_token(tokens):
@@ -113,6 +113,8 @@ def parseInputFile(path):
 
     if version == 'v1':
         content = parseV1(lines[1:])
+    if version == 'v2':
+        content = parseV2(lines[1:])
 
     return content
 
@@ -121,10 +123,11 @@ def parseV1(lines):
 
     tokens = []
     for l in lines:
+        l = l.strip()
         if len(l.strip()) == 0:
             continue
         if l.startswith('['):
-            label = l[1:-2]
+            label = l[1:-1]
             tokens.append((LABEL_NAME, label))
         else:
             tokens.append((NOTES_NAME, l.split()))
@@ -132,18 +135,37 @@ def parseV1(lines):
     return tokens
 
 
+def parseV2(lines):
+    # same as V1
+    # allow end of lines repeats
 
+    tokens = []
+    for l in lines:
+        l = l.strip()
+        if len(l) == 0:
+            continue
+        if l.startswith('['):
+            label = l[1:-1]
+            tokens.append((LABEL_NAME, label))
+        else:
+            if l[-1] == ')':
+                notes, repeat = l.split('(')
+                repeat = int(repeat.split(')')[0])
+                for _ in range(repeat):
+                    tokens.append((NOTES_NAME, notes.split()))
+            else:
+                tokens.append((NOTES_NAME, l.split()))
 
-
+    return tokens
 
 
 if len(sys.argv) == 2:
-
     baseDict = {'E':"", 'A':"", 'D' :"",'G':"",'B':"",'e':""}
     parsed =  parseInputFile(sys.argv)
     print parsed
     resList = parse(parsed, baseDict)
     print listResDictToString(resList)
+
 else:
     print " old test "
     baseDict = {'E':"", 'A':"", 'D' :"",'G':"",'B':"",'e':""}
