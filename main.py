@@ -6,6 +6,7 @@ NOTES_NAME = "NOTES"
 
 LABEL_NAME = "LABEL"
 
+DEBUG = False
 
 def parse(tokenTuples, resDict):
     state = []
@@ -29,12 +30,16 @@ def parse(tokenTuples, resDict):
                         if char.isalpha():
                             state.append(char)
                 else:
+
                     reqTokens = [token]
+
 
 
                 tokens, stateDict = parse_notes_state(state, tokens, reqTokens, stateDict)
 
+
             outputRes.append((tokenTup[0], stateDict))
+
 
         elif tokenTup[0] == LABEL_NAME:
             outputRes.append(tokenTup)

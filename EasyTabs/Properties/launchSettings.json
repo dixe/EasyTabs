@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EasyTabs": {
+      "commandName": "Project",
+      "commandLineArgs": "E:\\repos\\EasyTabs\\newSong1.et"
+    }
+  }
+}
