@@ -1,6 +1,31 @@
 v1
 
-
 [Intro]
-E 0 e 3 E 0 e 2 eA 0 0
-E 0 e 3 E 0 e 5 3 2 eA 0 0
+[1]
+E 0 e 3 E 0 e 2 E 0 e 0
+E 0 e 3 5 3 2 0
+
+
+[2]
+E 0 e 3 E 0 e 2 E 0 e 0
+E 0 e 3 5 2 0 eA 0 0
+
+[3]
+E 0 e 3 E 0 e 2 e 0 eA 0 0
+E 0 e 3 5 3 2 0
+
+[4]
+E 0 e 3 E 0 e 2 e 0 eA 0 0
+E 0 e 3 5 2 0 eA 0 0
+
+
+[Verse]
+
+Ee 0 3 3 2 E 2 Ee 0 0
+EG 0 0 G 0 EG 3 3 2 2 0 0 D 2
+
+
+[Altverse]
+
+EG 0 0 G 0 EG 0 3 G 2 EG 0 0 A 2
+EG 0 0 G 0 EG 0 3 G 2 ED 0 2

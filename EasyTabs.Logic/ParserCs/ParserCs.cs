@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EasyTabs.Logic.Parser
+namespace EasyTabs.Logic.ParserCs
 {
-    public class Parser
+    public class ParserCs
     {
 
         public ParserResult Parse(string input)
@@ -18,8 +18,11 @@ namespace EasyTabs.Logic.Parser
             {
                 case "v1": return ParseV1(lines.Skip(1));                                   
                 case "v2": return ParseV2(lines.Skip(1));
-                default: break;
-
+                default:
+                    {
+                        Console.WriteLine("No version found returning empy parse");
+                        break;
+                    }
             }
             return new ParserResult();
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyTabs.Logic.Parser
+namespace EasyTabs.Logic.ParserCs
 {
     public class LineNote
     {

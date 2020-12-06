@@ -1,8 +1,9 @@
-﻿using EasyTabs.Logic.Parser;
+﻿using EasyTabs.Logic.ParserCs;
 using System.Linq;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using EasyTabs.Parser;
 
 namespace EasyTabs
 {
@@ -10,36 +11,61 @@ namespace EasyTabs
     {
         static void Main(string[] args)
         {
-            var parser = new Parser();
+            string fileName = null;
 
-            if (args.Length == 1)
+            if (args.Length >= 1)
             {
-
+                
                 if (!args[0].EndsWith(".et"))
                 {
                     Console.WriteLine($"Argument {args[0]} does not have .et ending as expected exiting ");
                     return;
                 }
 
-                LoadFromFile(args[0]);
+                fileName = args[0];
+            }
+
+            if (args.Contains("-fs"))
+            {
+                var content = TestDataV1;
+                if(fileName != null)
+                {
+                    content = LoadFromFile(fileName);
+                }
+                FsParser(content);
                 return;
             }
 
-           var parseRes = parser.Parse(TestDataV1);
-            
-           var outString = WriteResult(parseRes);
+            var parser = new ParserCs();
+
+            if (args.Length == 1)
+            {
+
+                ParseFromFile(fileName);
+
+                return;
+            }
+
+            var parseRes = parser.Parse(TestDataV1);
+
+            var outString = WriteResult(parseRes);
 
 
             Console.WriteLine(outString);
 
         }
 
-
-        static void LoadFromFile(string fileName)
+        static void FsParser(string content)
         {
-            var content = File.ReadAllText(fileName);
-            
-            var parser = new Parser();
+            var res = ParserFs.ParseEasyTabs(content);
+            ParserFs.TestParse(content);
+        }
+
+
+        static void ParseFromFile(string fileName)
+        {
+            var content = LoadFromFile(fileName);
+            var parser = new ParserCs();
 
             var parseRes = parser.Parse(content);
 
@@ -49,14 +75,25 @@ namespace EasyTabs
             Console.Write(textOut);
             File.WriteAllText(outFile, textOut);
 
+
         }
-        
+
+        static string LoadFromFile(string fileName)
+        {
+            var content = File.ReadAllText(fileName);
+
+            return content;
+            
+         
+        }
 
         static string WriteResult(ParserResult result)
         {
             var outText = "";
             foreach( var part in result.Parts)
             {
+                var length = part.moments.Count * 3;               
+
                 outText += WriteMoments(part.label, part.moments, result.TuningDict);
 
                 outText += "\n\n";
@@ -105,7 +142,7 @@ namespace EasyTabs
 
             }
             
-            var lineLength = 300;
+            var lineLength = 80;
             var lineOffSet = 0;
             var order = tuningDict.OrderBy(x => x.Value).ToList();
 

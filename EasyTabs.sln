@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTabs", "EasyTabs\EasyTabs.csproj", "{0616FF9C-514F-4563-86B5-298AD5CC659F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTabs", "EasyTabs\EasyTabs.csproj", "{0616FF9C-514F-4563-86B5-298AD5CC659F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTabs.Logic", "EasyTabs.Logic\EasyTabs.Logic.csproj", "{886E4DBA-BBD9-43C3-B163-E855C07C575E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTabs.Logic", "EasyTabs.Logic\EasyTabs.Logic.csproj", "{886E4DBA-BBD9-43C3-B163-E855C07C575E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EasyTabs.Parser", "EasyTabs.Parser\EasyTabs.Parser.fsproj", "{1DB6CD95-8DD7-4DE6-8264-A52FA99C3F6C}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "EasyTabs.Parser", "EasyTabs.Parser\EasyTabs.Parser.fsproj", "{1DB6CD95-8DD7-4DE6-8264-A52FA99C3F6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
